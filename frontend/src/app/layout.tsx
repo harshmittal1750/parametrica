@@ -9,6 +9,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { DataProvider } from "@/context/DataContext";
 import { LocalizationProviderWrapper } from "@/lib/LocalizationProviderWrapper";
+import { ThirdProvider } from "@/ThirdwebProvider";
 
 export const metadata: Metadata = {
   title: "Parametrica",
@@ -23,13 +24,15 @@ const RootLayout: FC<PropsWithChildren<{}>> = ({ children }) => {
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <LocalizationProviderWrapper>
-            <DataProvider>
-              <ClientLayout>
-                <Header />
-                {children}
-                <Footer />
-              </ClientLayout>
-            </DataProvider>
+            <ThirdProvider>
+              <DataProvider>
+                <ClientLayout>
+                  <Header />
+                  {children}
+                  <Footer />
+                </ClientLayout>
+              </DataProvider>
+            </ThirdProvider>
           </LocalizationProviderWrapper>
         </ThemeProvider>
       </body>

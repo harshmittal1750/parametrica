@@ -16,7 +16,7 @@ const chains = [sepolia];
 const config = createConfig(
   getDefaultConfig({
     appName: APP_NAME,
-    infuraId: process.env.NEXT_PUBLIC_INFURA_ID,
+    infuraId: process.env.NEXT_PUBLIC_THIRDWEB_ID,
     walletConnectProjectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID!,
     chains,
   })

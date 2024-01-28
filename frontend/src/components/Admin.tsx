@@ -1,5 +1,6 @@
 "use client";
 import { useData } from "@/context/DataContext";
+import { useStorageUpload } from "@thirdweb-dev/react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import Head from "next/head";
@@ -17,8 +18,8 @@ import {
 import { DatePicker } from "@mui/x-date-pickers";
 
 function Admin() {
-  const projectId = process.env.NEXT_PUBLIC_INFURA_ID;
-  const projectSecretKey = process.env.NEXT_PUBLIC_INFURA_SECRET;
+  const projectId = process.env.NEXT_PUBLIC_THIRDWEB_ID;
+  const projectSecretKey = process.env.NEXT_PUBLIC_THIRDWEB_SECRET;
 
   const authorization = "Basic " + btoa(projectId + ":" + projectSecretKey);
   // console.log(authorization);
@@ -39,17 +40,19 @@ function Admin() {
   const [resolverUrl, setResolverUrl] = useState("");
   const [timestamp, setTimestamp] = useState("");
 
-  // const uploadImage = async (e: any) => {
-  //   try {
-  //     const file = e.target.files[0];
-  //     const added = await client.add(file);
-  //     setImageHash(added.path);
-  //     console.log(added.path);
-  //   } catch (uploadError) {
-  //     setError("Failed to upload image.");
-  //     console.log(uploadError);
-  //   }
-  // };
+  const { mutateAsync: upload } = useStorageUpload();
+
+  const uploadImage = async (e: any) => {
+    try {
+      const file = e.target.files[0];
+      const added = await upload(file);
+      setImageHash(added[0]);
+      console.log(added[0]);
+    } catch (uploadError) {
+      setError("Failed to upload image.");
+      console.log(uploadError);
+    }
+  };
 
   useEffect(() => {
     const initWeb3 = async () => {
@@ -94,6 +97,17 @@ function Admin() {
   const handleDateChange = (e: any) => {
     setTimestamp(e.target.value);
   };
+  // Upload files to IPFS
+
+  // // Render files from IPFS
+  // import { MediaRenderer } from "@thirdweb-dev/react";
+
+  // function ThirdwebProvider() {
+  // return (
+  //     // Supported types: image, video, audio, 3d model, html
+  //     <MediaRenderer src="ipfs://QmamvVM5kvsYjQJYs7x8LXKYGFkwtGvuRvqZsuzvpHmQq9/0" />
+  // );
+  // }
 
   return (
     <>
@@ -159,7 +173,7 @@ function Admin() {
               />
               <FormControl fullWidth sx={{ marginTop: 3 }}>
                 <InputLabel>Market Title Image</InputLabel>
-                {/* <input type="file" onChange={uploadImage} /> */}
+                <input type="file" onChange={uploadImage} />
               </FormControl>
               <TextField
                 label="Resolve URL"

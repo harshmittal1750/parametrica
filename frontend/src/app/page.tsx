@@ -11,6 +11,7 @@ import { useData } from "../context/DataContext";
 import { MarketProps } from "@/types";
 import LandingPageCarousal from "@/components/LandingPageCarousal";
 import Markets from "@/components/Markets";
+import { ThirdwebProvider } from "@thirdweb-dev/react";
 
 const Home = () => {
   const { polymarket, account, loadWeb3, loading } = useData();
